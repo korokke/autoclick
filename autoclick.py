@@ -40,6 +40,9 @@ class MainWindow(QMainWindow):
         self.edit_down.setValidator(QIntValidator())
         self.edit_down.textChanged.connect(self.down_changed)
 
+        self.bgonly = QCheckBox('Background only', cw)
+        self.bgonly.toggle()
+
         font = QFont()
         font.setPointSize(20)
         font.setBold(True)
@@ -57,6 +60,7 @@ class MainWindow(QMainWindow):
 
         hbox = QHBoxLayout()
         vbox = QVBoxLayout()
+        vbox.addWidget(self.bgonly)
         vbox.addWidget(label_up, alignment=Qt.AlignBottom)
         vbox.addWidget(self.edit_up, alignment=Qt.AlignTop)
         vbox.addWidget(label_down, alignment=Qt.AlignBottom)
@@ -110,11 +114,12 @@ class MainWindow(QMainWindow):
             self.reset()
 
     def tick(self):
-        if self.hwnd == win32gui.GetForegroundWindow():
-            if not self.foreground:
-                self.reset()
-            self.foreground = True
-            return
+        if self.bgonly.checkState() == Qt.Checked:
+            if self.hwnd == win32gui.GetForegroundWindow():
+                if not self.foreground:
+                    self.reset()
+                self.foreground = True
+                return
 
         self.foreground = False
 
