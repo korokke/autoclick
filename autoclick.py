@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle('Valheim AutoClick')
-        self.setFixedSize(300, 180)
+        self.setBaseSize(320, 180)
         cw = QWidget()
 
         self.hwnd = hwnd
@@ -45,7 +45,7 @@ class MainWindow(QMainWindow):
         font.setBold(True)
 
         self.btn = QPushButton('toggle', cw)
-        self.btn.setFixedSize(150, 150)
+        self.btn.setMinimumSize(150, 150)
         self.btn.setCheckable(True)
         self.btn.setFont(font)
         self.btn.setStyleSheet(
