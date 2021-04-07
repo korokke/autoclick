@@ -5,8 +5,6 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 import win32gui
 import win32con
-import win32file
-import win32api
 
 INTERVAL_MS = 50
 
@@ -29,7 +27,7 @@ class MainWindow(QMainWindow):
         self.elapsed = 0
         self.timeout = 0
         self.lbutton_up = True
-        self.foreground = False
+        self.background = True
 
         self.timer = QTimer()
         self.timer.setInterval(INTERVAL_MS)
@@ -103,11 +101,13 @@ class MainWindow(QMainWindow):
         self.elapsed = 0
         self.timeout = 0
         self.lbutton_up = True
+        self.background = True
         win32gui.SendMessage(self.hwnd, win32con.WM_LBUTTONUP, 0, 0)
 
     def on_toggle(self, state):
         self.edit_down.setDisabled(state)
         self.edit_up.setDisabled(state)
+        self.bgonly.setDisabled(state)
 
         if state:
             self.btn.setText("ON")
@@ -121,12 +121,11 @@ class MainWindow(QMainWindow):
     def tick(self):
         if self.bgonly.checkState() == Qt.Checked:
             if self.hwnd == win32gui.GetForegroundWindow():
-                if not self.foreground:
+                if self.background:
                     self.reset()
-                self.foreground = True
+                    self.background = False
                 return
-
-        self.foreground = False
+            self.background = True
 
         self.elapsed += INTERVAL_MS
         if self.elapsed < self.timeout:
