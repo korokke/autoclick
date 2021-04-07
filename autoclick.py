@@ -5,19 +5,24 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 import win32gui
 import win32con
+import win32file
+import win32api
 
 INTERVAL_MS = 50
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, hwnd):
+    def __init__(self):
         super().__init__()
+
+        self.hwnd = win32gui.FindWindow(None, 'Valheim')
+        if self.hwnd == 0:
+            QMessageBox.critical(self, 'Error', 'Launch Valheim first!')
+            sys.exit(1)
 
         self.setWindowTitle('Valheim AutoClick')
         self.setBaseSize(320, 180)
         cw = QWidget()
-
-        self.hwnd = hwnd
 
         self.up = 200
         self.down = 200
@@ -140,14 +145,7 @@ class MainWindow(QMainWindow):
 
 def main():
     app = QApplication(sys.argv)
-
-    hwnd = win32gui.FindWindow(None, 'Valheim')
-    if hwnd is None:
-        error_dialog = QErrorMessage()
-        error_dialog.showMessage('Launch Valheim first!')
-        sys.exit(app.exec_())
-
-    ex = MainWindow(hwnd)
+    ex = MainWindow()
     ex.show()
     sys.exit(app.exec_())
 
