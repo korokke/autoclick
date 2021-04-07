@@ -1,5 +1,6 @@
 build/
 dist/
+__pycache__/
 *.manifest
 *.spec
 pip-log.txt
