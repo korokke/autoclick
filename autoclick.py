@@ -30,12 +30,12 @@ class MainWindow(QMainWindow):
         self.timer.setInterval(INTERVAL_MS)
         self.timer.timeout.connect(self.tick)
 
-        label_up = QLabel('UP interval (ms)')
+        label_up = QLabel('UP (ms)')
         self.edit_up = QLineEdit(str(self.up))
         self.edit_up.setValidator(QIntValidator())
         self.edit_up.textChanged.connect(self.up_changed)
 
-        label_down = QLabel('DOWN interval (ms)')
+        label_down = QLabel('DOWN (ms)')
         self.edit_down = QLineEdit(str(self.down))
         self.edit_down.setValidator(QIntValidator())
         self.edit_down.textChanged.connect(self.down_changed)
